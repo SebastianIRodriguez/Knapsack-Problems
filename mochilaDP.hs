@@ -26,9 +26,9 @@ reemplazarEnMatriz i j (xs:xss) a = xs:(reemplazarEnMatriz (i-1) j xss a)
 
 maximo a b = if (a > b) then a else b
 
-memo = crearMatriz (wMax+1) ((length objetos)+1)
-
-dp [] wMax memo i j = memo --foldr (maximo) 0 (map (foldr (maximo) 0) memo)
+dp [] wMax memo i j = foldr (maximo) 0 (map (foldr (maximo) 0) memo)
 dp ((x,y):xs) wMax memo i j = if (j > wMax) then dp xs wMax memo (i+1) 0
                               else if (y>j) then dp ((x,y):xs) wMax (reemplazarEnMatriz i j memo (indexMatriz (i-1) j memo)) i (j+1)
-                                   else dp ((x,y):xs) wMax (reemplazarEnMatriz i j memo (maximo (indexMatriz (i-1) j memo) ((indexMatriz (i-1) (j-y+1) memo)+x))) i (j+1)
+                                   else dp ((x,y):xs) wMax (reemplazarEnMatriz i j memo (maximo (indexMatriz (i-1) j memo) ((indexMatriz (i-1) (j-y) memo)+x))) i (j+1)
+
+problemaMochila wMax objetos = dp objetos wMax (crearMatriz (wMax+1) ((length objetos)+1)) 1 0
