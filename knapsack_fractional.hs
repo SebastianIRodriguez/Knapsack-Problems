@@ -6,9 +6,16 @@
 -- A ← A ∪ {x}
 -- return A
 
-knapsack [] max_w = 0.0
-knapsack ((v, w):xs) max_w = if(max_w - w) > 0 
-    then v + knapsack xs (max_w - w)
+knapsack list maxW = greedy (mergeSort list) maxW
+
+-- Calcular el valor maximo que puede cargar la mochila
+-- ::[(Double, Double)]		Lista de los productos con sus respectivos valores y pesos
+-- ->Double					Peso maximo que puede cargar la mochila
+-- ->Double					Valor maximo que puede cargar la mochila
+greedy::[(Double, Double)] -> Double -> Double
+greedy [] max_w = 0.0
+greedy ((v, w):xs) max_w = if(max_w - w) > 0 
+    then v + greedy xs (max_w - w)
     else v * max_w / w
 
 
@@ -25,11 +32,13 @@ merge ((a, b):as) ((c, d):bs)
   | (a/b) > (c/d) = (a, b):(merge as ((c, d):bs))
   | otherwise = (c, d):(merge ((a, b):as) bs)
 
+a::[(Double, Double)]
 a = [ 
     (60.0, 10.0),
     (100.0, 20.0),
     (120.0, 30.0)
     ]
+c::[(Double, Double)]
 
 c = [
   (36.0, 3.8),
@@ -43,8 +52,7 @@ c = [
   (98.0, 5.9)
   ]
 
+b::Double
 b = 15.0
-
-
 
 
